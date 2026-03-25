@@ -1,13 +1,14 @@
 import 'package:castbrick/castbrick.dart';
 
 Future<void> main() async {
-  final cb = CastBrick(apiKey: 'your_api_key_here');
+  final cb = CastBrick(apiKey: '3ab725d34ff74ec9997f26ec81677287');
 
   try {
     // Send an SMS
     final result = await cb.sms.send(
       to: ['+244923000000'],
       content: 'Hello from CastBrick!',
+      senderId: "CastBrick",
     );
     print('Sent: ${result.messageId} — ${result.status}');
 
