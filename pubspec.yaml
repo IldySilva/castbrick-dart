@@ -1,6 +1,6 @@
 name: castbrick
 description: Official Dart SDK for the CastBrick API — SMS, Contacts and Broadcasts.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/IldySilva/castbrick-dart
 
 environment:

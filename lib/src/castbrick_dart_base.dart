@@ -21,7 +21,7 @@ class CastBrick {
 
   CastBrick({
     required String apiKey,
-    String baseUrl = 'https://api.castbrick.com/v1',
+    String baseUrl = 'https://api.castbrick.co/v1',
   }) : _client = CastBrickClient(apiKey: apiKey, baseUrl: baseUrl) {
     sms = SmsResource(_client);
     contacts = ContactsResource(_client);
