@@ -13,19 +13,18 @@ class SmsResource {
     DateTime? scheduledAt,
     String? contactListId,
   }) async {
-    final raw = await _client.post<Map<String, dynamic>>('/sms/send', body: {
-      'recipients': to,
-      'content': content,
-      if (senderId != null) 'senderId': senderId,
-      if (scheduledAt != null) 'scheduledAt': scheduledAt.toUtc().toIso8601String(),
-      if (contactListId != null) 'contactListId': contactListId,
-    });
+    final raw = await _client.post<Map<String, dynamic>>(
+      '/sms/send',
+      body: {
+        'recipients': to,
+        'content': content,
+        if (senderId != null) 'senderId': senderId,
+        if (scheduledAt != null)
+          'scheduledAt': scheduledAt.toUtc().toIso8601String(),
+        if (contactListId != null) 'contactListId': contactListId,
+      },
+    );
     return SendSmsResponse.fromJson(raw);
-  }
-
-  Future<SmsMessage> get(String id) async {
-    final raw = await _client.get<Map<String, dynamic>>('/sms/$id');
-    return SmsMessage.fromJson(raw);
   }
 
   Future<PagedResult<SmsMessage>> list({
@@ -40,6 +39,9 @@ class SmsResource {
   }
 
   Future<void> cancelScheduled(String messageId) async {
-    await _client.post<void>('/sms/cancel-scheduled', body: {'messageId': messageId});
+    await _client.post<void>(
+      '/sms/cancel-scheduled',
+      body: {'messageId': messageId},
+    );
   }
 }

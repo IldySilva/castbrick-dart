@@ -51,45 +51,61 @@ class SendSmsResponse {
     required this.timestamp,
   });
 
-  factory SendSmsResponse.fromJson(Map<String, dynamic> json) => SendSmsResponse(
-    messageId: json['messageId'] as String,
-    status: json['status'] as String,
-    recipientCount: json['recipientCount'] as int,
-    error: json['error'] as String?,
-    timestamp: json['timestamp'] as String,
-  );
+  factory SendSmsResponse.fromJson(Map<String, dynamic> json) =>
+      SendSmsResponse(
+        messageId: json['messageId'] as String,
+        status: json['status'] as String,
+        recipientCount: json['recipientCount'] as int,
+        error: json['error'] as String?,
+        timestamp: json['timestamp'] as String,
+      );
 }
 
 class SmsMessage {
   final String id;
-  final String phoneNumber;
+  final String? contactName;
+  final String recipientPhone;
   final String message;
+  final String? campaignName;
+  final String? campaignId;
+  final String? senderId;
   final String status;
-  final String tenantId;
+  final String? errorMessage;
+  final int retryCount;
+  final String? scheduledAt;
   final String? sentAt;
   final String? deliveredAt;
-  final String createdAt;
 
   SmsMessage({
     required this.id,
-    required this.phoneNumber,
+    this.contactName,
+    required this.recipientPhone,
     required this.message,
+    this.campaignName,
+    this.campaignId,
+    this.senderId,
     required this.status,
-    required this.tenantId,
+    this.errorMessage,
+    required this.retryCount,
+    this.scheduledAt,
     this.sentAt,
     this.deliveredAt,
-    required this.createdAt,
   });
 
   factory SmsMessage.fromJson(Map<String, dynamic> json) => SmsMessage(
     id: json['id'] as String,
-    phoneNumber: json['phoneNumber'] as String,
+    contactName: json['contactName'] as String?,
+    recipientPhone: json['recipientPhone'] as String,
     message: json['message'] as String,
+    campaignName: json['campaignName'] as String?,
+    campaignId: json['campaignId'] as String?,
+    senderId: json['senderId'] as String?,
     status: json['status'] as String,
-    tenantId: json['tenantId'] as String,
+    errorMessage: json['errorMessage'] as String?,
+    retryCount: json['retryCount'] as int,
+    scheduledAt: json['scheduledAt'] as String?,
     sentAt: json['sentAt'] as String?,
     deliveredAt: json['deliveredAt'] as String?,
-    createdAt: json['createdAt'] as String,
   );
 }
 
