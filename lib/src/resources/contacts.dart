@@ -27,9 +27,9 @@ class ContactsResource {
     return Contact.fromJson(raw);
   }
 
-  Future<int> create({String? emails, String? phoneNumbers}) async {
-    return await _client.post<int>('/audience/contacts', body: {
-      if (emails != null) 'emails': emails,
+  /// Create one or more contacts from comma/newline-separated phone numbers.
+  Future<void> create({String? phoneNumbers}) async {
+    await _client.post<void>('/audience/contacts', body: {
       if (phoneNumbers != null) 'phoneNumbers': phoneNumbers,
     });
   }
@@ -54,12 +54,10 @@ class ContactsResource {
     return ContactList.fromJson(raw);
   }
 
-  Future<ContactList> createList(String name) async {
-    final raw = await _client.post<Map<String, dynamic>>(
-      '/audience/lists',
-      body: {'name': name},
-    );
-    return ContactList.fromJson(raw);
+  /// Create a contact list. Returns the ID of the created list.
+  Future<String> createList(String name) async {
+    final id = await _client.post<String>('/audience/lists', body: {'name': name});
+    return id;
   }
 
   Future<void> addToList(String listId, String contactId) async {

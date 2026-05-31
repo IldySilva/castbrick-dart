@@ -18,7 +18,7 @@ class CastBrickClient {
 
   CastBrickClient({
     required this.apiKey,
-    this.baseUrl = 'https://api.castbrick.co/v1',
+    this.baseUrl = 'https://api.castbrick.co',
     http.Client? httpClient,
   }) : _httpClient = httpClient ?? http.Client();
 
