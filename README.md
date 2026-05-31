@@ -1,4 +1,4 @@
-# castbrick_dart
+# castbrick
 
 Official Dart SDK for the [CastBrick](https://castbrick.com) API — send SMS, manage contacts and run broadcasts from any Dart or Flutter app.
 
@@ -8,7 +8,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  castbrick: ^0.1.0
+  castbrick: ^0.1.3
 ```
 
 Then run:
@@ -29,7 +29,7 @@ final result = await cb.sms.send(
   to: ['+244923000000'],
   content: 'Hello from CastBrick!',
 );
-print(result.status); // sent
+print(result.status);
 
 cb.close();
 ```
@@ -41,19 +41,23 @@ cb.close();
 await cb.sms.send(
   to: ['+244923000000', '+244912000000'],
   content: 'Your OTP is 1234',
-  senderId: 'MyApp',                                    // optional
-  scheduledAt: DateTime.now().add(Duration(hours: 1)), // optional
+  senderId: 'MyApp',                                     // optional
+  scheduledAt: DateTime.now().add(const Duration(hours: 1)), // optional
+  fallback: true,                                        // optional
 );
 
-// Get a single message
-final msg = await cb.sms.get('message-id');
-print(msg.status);
-
-// List (paginated)
-final page = await cb.sms.list(page: 1, pageSize: 20);
+// List (with optional filters)
+final page = await cb.sms.list(
+  page: 1,
+  pageSize: 20,
+  status: 'delivered',       // pending | sent | delivered | failed | scheduled
+  phone: '+244923000000',
+  from: DateTime(2026, 1, 1),
+  to: DateTime(2026, 6, 1),
+);
 print('${page.totalCount} messages');
 
-// Cancel a scheduled message
+// Cancel a scheduled SMS
 await cb.sms.cancelScheduled('message-id');
 ```
 
@@ -66,9 +70,8 @@ final page = await cb.contacts.list(search: 'john');
 // Get
 final contact = await cb.contacts.get('contact-id');
 
-// Create (comma or newline-separated values)
+// Create — comma or newline-separated phone numbers
 await cb.contacts.create(phoneNumbers: '+244923000000,+244912000000');
-await cb.contacts.create(emails: 'alice@example.com');
 
 // Delete
 await cb.contacts.delete('contact-id');
@@ -80,12 +83,12 @@ await cb.contacts.delete('contact-id');
 // List all
 final lists = await cb.contacts.listLists();
 
-// Create
-final list = await cb.contacts.createList('VIP Customers');
+// Create — returns the new list ID (String)
+final listId = await cb.contacts.createList('VIP Customers');
 
 // Add / remove a contact
-await cb.contacts.addToList(list.id, contact.id);
-await cb.contacts.removeFromList(list.id, contact.id);
+await cb.contacts.addToList(listId, contact.id);
+await cb.contacts.removeFromList(listId, contact.id);
 ```
 
 ## Broadcasts
@@ -130,14 +133,10 @@ try {
   await cb.sms.send(to: ['+244923000000'], content: 'Hello!');
 } on CastBrickApiError catch (e) {
   print('${e.status}: ${e.body}');
+  // 401 → invalid or revoked API key
+  // 402 → insufficient credits
+  // 422 → validation error
 }
-```
-
-## Publishing to pub.dev
-
-```bash
-dart pub publish --dry-run  # validate first
-dart pub publish
 ```
 
 ## License
