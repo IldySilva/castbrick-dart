@@ -5,3 +5,8 @@ export 'src/castbrick_dart_base.dart';
 export 'src/resources/sms.dart';
 export 'src/resources/contacts.dart';
 export 'src/resources/broadcasts.dart';
+export 'src/push/push_event.dart';
+export 'src/push/push_token_response.dart';
+export 'src/push/push_publish_response.dart';
+export 'src/push/push_subscription.dart';
+export 'src/push/push_resource.dart';

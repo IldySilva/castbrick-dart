@@ -1,3 +1,13 @@
+## 0.2.0
+
+### New Features
+- **`push.issueToken()`** — issue short-lived HMAC-signed channel tokens for browser/mobile clients
+- **`push.publish()`** — publish events to named channels from server-side code
+- **`push.subscribe()`** — open SSE subscription; returns `PushSubscription` with per-channel `Stream<PushEvent>`
+- New models: `PushEvent`, `PushTokenResponse`, `PushPublishResponse`
+- `SseClient` — raw SSE stream parser over `http.Client.send()` (works on all Flutter platforms)
+- Auto-reconnect with exponential backoff (1s → 30s), `Last-Event-ID` replay support
+
 ## 0.1.3
 
 ### Bug Fixes

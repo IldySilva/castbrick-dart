@@ -96,6 +96,14 @@ class CastBrickClient {
     throw CastBrickApiError(response.statusCode, body);
   }
 
+  /// Exposes the underlying [http.Client] for SSE streaming.
+  http.Client get httpClient => _httpClient;
+
+  /// Builds a URI for SSE endpoints where auth is via query-param token.
+  Uri buildStreamUri(String path, {required String token}) {
+    return _buildUri(path, {'token': token});
+  }
+
   void close() {
     _httpClient.close();
   }
