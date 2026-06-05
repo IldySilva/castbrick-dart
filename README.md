@@ -8,7 +8,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  castbrick: ^0.1.3
+  castbrick: ^0.2.0
 ```
 
 Then run:
@@ -123,6 +123,54 @@ final page = await cb.broadcasts.list();
 final broadcast = await cb.broadcasts.get(id);
 print(broadcast.status);
 ```
+
+## Push (Realtime pub/sub)
+
+CastBrick Push lets you deliver realtime events to Flutter/Dart clients via SSE channels.
+
+### Server-side: issue token + publish
+
+```dart
+// Issue a short-lived channel token for the client
+final tokenResponse = await cb.push.issueToken(
+  channels: ['orders', 'user-42'],
+  userId: 'user-123',  // optional
+  ttlSeconds: 3600,    // optional, default 3600
+);
+
+// Publish an event to a channel
+final result = await cb.push.publish(
+  channel: 'orders',
+  event: 'order.created',
+  data: {'orderId': 'abc123', 'total': 5000},
+);
+
+print('${result.delivered} delivered, ${result.creditsUsed} credits');
+```
+
+### Client-side: subscribe to channels
+
+```dart
+// token comes from your backend (via issueToken above)
+final subscription = cb.push.subscribe(token: tokenResponse.token);
+
+// Listen to events on a specific channel
+subscription.on('orders').listen((PushEvent event) {
+  print('${event.event}: ${event.data}');
+});
+
+// Listen to another channel on the same connection
+subscription.on('user-42').listen((PushEvent event) {
+  print(event.data);
+});
+
+// Close when done
+subscription.dispose();
+```
+
+The subscription auto-reconnects on network loss with exponential backoff (1s → 30s) and replays missed events using `Last-Event-ID`.
+
+---
 
 ## Error handling
 
