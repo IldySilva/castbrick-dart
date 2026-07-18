@@ -1,3 +1,11 @@
+## 0.3.0
+
+### New Features
+- **`billing`** resource added for account balance, credit packages, and payment history.
+- **`segments`** resource added for audience segmentation.
+- **`templates`** resource added for managing message templates.
+- **`webhooks`** resource added for webhook subscription management and logging.
+
 ## 0.2.0
 
 ### New Features

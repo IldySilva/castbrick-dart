@@ -170,6 +170,31 @@ subscription.dispose();
 
 The subscription auto-reconnects on network loss with exponential backoff (1s → 30s) and replays missed events using `Last-Event-ID`.
 
+## Billing
+
+```dart
+// Get current credit balance
+final balance = await cb.billing.getBalance();
+
+// List available credit packages
+final packages = await cb.billing.listPackages();
+
+// List credit consumption/transaction history
+final history = await cb.billing.listTransactions();
+```
+
+## Segments, Templates & Webhooks
+
+The SDK also provides native access to `cb.segments`, `cb.templates`, and `cb.webhooks`.
+
+```dart
+// Example: Create a Webhook
+await cb.webhooks.create(
+  url: 'https://yourapp.com/webhooks/castbrick',
+  events: ['sms.delivered', 'sms.failed'],
+);
+```
+
 ---
 
 ## Error handling
